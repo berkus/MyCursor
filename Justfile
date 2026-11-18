@@ -1,10 +1,15 @@
-doit: convert activate
+_default: activate
+
+redo-it: convert activate
 
 theme_dir := "~/.local/share/icons/MyCursor"
 
-convert:
+convert: prereq
     xcursorgen xcom-cursor.cfg {{ theme_dir }}/cursors/left_ptr
-    cd {{ theme_dir }}/cursors/ && ln -s left_ptr default && ln -s left_ptr arrow
+    cd {{ theme_dir }}/cursors/ && ln -sf left_ptr default && ln -sf left_ptr arrow
 
 activate:
     gsettings set org.gnome.desktop.interface cursor-theme 'MyCursor'
+
+prereq:
+    which xcursorgen || sudo apt install x11-apps
